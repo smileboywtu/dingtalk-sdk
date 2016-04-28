@@ -46,13 +46,13 @@ def check_token(func):
         """use cache token or create new"""
         if not cache.get('token', '') or \
             cache.get('expire', 0) + 7200 < time.time():
-            resp = get_new_token()
+            resp = get_new_token(**kwargs)
             if resp['errcode'] != 0:
                 raise Exception('HttpError: %s', resp['errmsg'])
             cache['token'] = resp['token']
             cache['expire'] = time.time()
         return cache['token']
-    return __wrapper__()
+    return __wrapper__
 
 
 @check_token
